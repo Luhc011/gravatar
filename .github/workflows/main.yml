@@ -1,0 +1,27 @@
+name: Build and Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: Create NuGet package
+        run: dotnet pack --configuration Release
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./src/VisaoPkg.Gravatar/bin/Release/VisaoPkg.Gravatar.1.0.0.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
