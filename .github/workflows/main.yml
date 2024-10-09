@@ -24,4 +24,6 @@ jobs:
         run: dotnet pack --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./src/VisaoPkg.Gravatar/bin/Release/VisaoPkg.Gravatar.1.0.0.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate
+        run: |
+          latest_file=$(ls -t ./src/VisaoPkg.Gravatar/bin/Release/*.nupkg | head -1)
+          dotnet nuget push "$latest_file" --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate
