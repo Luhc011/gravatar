@@ -21,4 +21,6 @@ public static class GravatarExtension
         return $"https://gravatar.com.br/avatar/{sb.ToString().ToLower()}";
 
     }
+
+    public static string RetornarTexto(string txt) => txt;
 }
