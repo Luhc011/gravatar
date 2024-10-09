@@ -17,18 +17,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
-
-      - name: Generate Version
-        id: gitversion
-        run: gitversion /output json /showvariable FullSemVer
-
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: Create NuGet package
-        run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.gitversion.outputs.FullSemVer }}
+        run: dotnet pack --configuration Release
 
       - name: Publish NuGet package
-        run: dotnet nuget push ./src/VisaoPkg.Gravatar/bin/Release/VisaoPkg.Gravatar.${{ steps.gitversion.outputs.FullSemVer }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }}
+        run: dotnet nuget push ./src/VisaoPkg.Gravatar/bin/Release/VisaoPkg.Gravatar.1.0.0.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_TOKEN}} --skip-duplicate
